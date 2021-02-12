@@ -25,16 +25,16 @@ cp_mgmt_access_rule_vars:
 - { state: present, layer: orchestration_demo Network,  name: Access to Web Application,
     position: 1,  source: any, destination: ["hst-dmz-webserver"], service: ["http", "https"], action: Accept, track_type: log, track_accounting: true
   }
-- { state: present, layer: orchestration_demo Network, name: ACMECorp WebServer to APP, 
+- { state: present, layer: orchestration_demo Network, name: WebServer to APP, 
     position: 2, source: ["hst-dmz-webserver"], destination: Net_AppServers, service: ["MySQL"], action: Accept, track_type: log, track_accounting: true
   }
-- { state: present, layer: orchestration_demo Network, name: ACMECorp AppServer to DB, 
+- { state: present, layer: orchestration_demo Network, name: AppServer to DB, 
     position: 3, source: Net_AppServers, destination: Net_DBServers, service: ["MySQL"], action: Accept, track_type: log, track_accounting: true
   }
-- { state: present, layer: orchestration_demo Network, name: ACMECorp WebServer Outbound Access, 
+- { state: present, layer: orchestration_demo Network, name: WebServer Outbound Access, 
     position: 4, source: ["hst-dmz-webserver"], destination: any, service: ["http", "https", "ntp", "dns"], action: Accept, track_type: log, track_accounting: true
   }
   # Enable log on the existing cleanup rule
 - { state: present, layer: orchestration_demo Network, name: Cleanup rule, 
-    position: 5, source: any, destination: ["any"], service: ["any"], action: Drop, track_type: log, track_accounting: false
+    position: 5, source: any, destination: ["any"], service: ["any"], action: Drop, track_type: log, track_accounting: true
   }
