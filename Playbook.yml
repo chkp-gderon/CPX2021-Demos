@@ -1,0 +1,28 @@
+- name: Build an inventory
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: Create a dynamic inventory
+      add_host:
+        hostname: "{{ lookup('env','VAR_mgmt_hostname') }}"
+        ansible_host: "{{ lookup('env','VAR_mgmt_IP') }}"
+        # Credentials for cp_mgmt* modules and Settings for the Check Point httpapi plugin that provides methods to connect to Checkpoint devices over a HTTP(S)-based api.
+        ansible_httpapi_use_ssl: True
+        ansible_httpapi_validate_certs: False
+        ansible_network_os: check_point.mgmt.checkpoint
+        #ansible_checkpoint_domain: SMC User
+        ansible_user: "{{ lookup('env','VAR_mgmt_api_user') }}"
+        ansible_ssh_pass: "{{ lookup('env','VAR_mgmt_api_password') }}"
+        #ansible_api_key: "{{ lookup('env','VAR_mgmt_api_key') }}"
+        groups: Check_Point
+
+- name: Create Security Policy from Code
+  hosts: "{{ lookup('env','VAR_mgmt_hostname') }}"
+  connection: httpapi
+  gather_facts: no
+  vars_files: 
+    - security_policy/orchestration_demo.yml
+  roles:
+    - role: roles/chkp_sec_policy
+      

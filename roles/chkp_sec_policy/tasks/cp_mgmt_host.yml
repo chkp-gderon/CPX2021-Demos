@@ -1,0 +1,32 @@
+---
+# Add or delete  host object in Check Point management server
+- name: add-host or delete-host
+  check_point.mgmt.cp_mgmt_host:
+    state: "{{item.state}}"
+    name: "{{item.name}}"
+    ip_address: "{{item.ip}}"
+  loop: "{{ cp_mgmt_host_vars|default({}) }}"
+  when: cp_mgmt_host_vars and item.name is defined
+  notify: Publish and install handler
+
+- name: set-host nat settings
+  check_point.mgmt.cp_mgmt_host:
+    name: "{{item.name}}"
+    state: "{{item.state}}"
+    nat_settings:
+      auto_rule: "{{item.nat_auto_rule}}"
+      install_on: "{{item.nat_install_on}}"
+      ipv4_address: "{{item.nat_ipv4}}"
+      method: "{{item.nat_method}}"
+  loop: "{{cp_mgmt_host_vars}}"
+  when: item.nat_method is defined
+  notify: Publish and install handler
+
+- name: set-host tag settings
+  check_point.mgmt.cp_mgmt_host:
+    name: "{{item.name}}"
+    tags: "{{item.tags}}"
+  loop: "{{cp_mgmt_host_vars}}"
+  when: item.tags is defined
+  notify: Publish and install handler
+

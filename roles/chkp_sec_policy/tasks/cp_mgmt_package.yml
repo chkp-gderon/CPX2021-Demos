@@ -1,0 +1,12 @@
+---
+# Add or delete security policy package from Check Point management server
+- name: Add or delete policy package
+  check_point.mgmt.cp_mgmt_package:
+    state: "{{item.state}}"
+    access: "{{item.access}}"
+    color: "{{item.color}}"
+    comments: "{{item.comments}}"
+    name: "{{item.name}}"
+    threat_prevention: "{{item.threat_prevention}}"
+  loop: "{{cp_mgmt_package_vars}}"
+  notify: Publish and install handler

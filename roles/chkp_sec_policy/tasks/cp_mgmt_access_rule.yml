@@ -1,0 +1,25 @@
+---
+# Add access policy rules in Check Point management server
+- name: add-access-rule or delete-access-rule tasks
+  check_point.mgmt.cp_mgmt_access_rule:
+    state: "{{item.state}}"
+    layer: "{{item.layer}}"
+    name: "{{item.name}}"
+    position: "{{item.position}}"
+    source: "{{item.source}}"
+    destination: "{{item.destination}}"
+    service: "{{item.service}}"
+    action: "{{item.action}}"
+    track:
+      type: "{{item.track_type}}"
+      accounting: "{{item.track_accounting}}"
+  loop: "{{cp_mgmt_access_rule_vars}}"
+  notify: Publish and install handler
+
+- name: set-access-rule inline layer
+  check_point.mgmt.cp_mgmt_host:
+    name: "{{item.name}}"
+    inline_layer: "{{item.inline_layer}}"
+  loop: "{{cp_mgmt_access_rule_vars}}"
+  when: item.action == "Apply Layer"
+  notify: Publish and install handler

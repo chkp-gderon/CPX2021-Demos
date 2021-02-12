@@ -1,0 +1,20 @@
+---
+# Add or delete network object in Check Point management server
+- name: add-network or delete-network
+  check_point.mgmt.cp_mgmt_network:
+    state: "{{item.state}}"
+#    groups: "{{item.groups}}"
+    name: "{{item.name}}"
+    subnet: "{{ item.subnet | ipaddr('network') }}"
+    subnet_mask: "{{ item.subnet | ipaddr('netmask') }}"
+  loop: "{{cp_mgmt_network_vars}}"
+  when: cp_mgmt_network_vars is defined
+  notify: Publish and install handler
+
+- name: set-network tag settings
+  check_point.mgmt.cp_mgmt_network:
+    name: "{{item.name}}"
+    tags: "{{item.tags}}"
+  loop: "{{cp_mgmt_network_vars}}"
+  when: item.tags is defined
+  notify: Publish and install handler

@@ -1,0 +1,40 @@
+---
+# POLICY PACKAGE
+policy_name: orchestration_demo
+cp_mgmt_package_vars:
+- { state: present, 
+    name: orchestration_demo, 
+    comments: Created by ansible during orchestration_demo, 
+    color: forest green, 
+    threat_prevention: false, 
+    access: true 
+  }
+
+# NETWORKS
+cp_mgmt_network_vars:
+- { state: present, name: 'Net_AppServers', subnet: 10.10.1.0/24, groups: ["ACME_nets"], tags: ["CPX", "Ansible"] }
+- { state: present, name: 'Net_DBServers', subnet: 10.10.11.0/24, groups: ["ACME_nets"], tags: ["CPX", "Ansible"] }
+
+# HOSTS
+cp_mgmt_host_vars:
+- { state: present, name: hst-dmz-webserver, ip: 10.10.0.10, tags: ["CPX", "Ansible"]
+  }
+
+# RULES
+cp_mgmt_access_rule_vars:
+- { state: present, layer: orchestration_demo Network,  name: Access to Web Application,
+    position: 1,  source: any, destination: ["hst-dmz-webserver"], service: ["http", "https"], action: Accept, track_type: log, track_accounting: true
+  }
+- { state: present, layer: orchestration_demo Network, name: ACMECorp WebServer to APP, 
+    position: 2, source: ["hst-dmz-webserver"], destination: Net_AppServers, service: ["MySQL"], action: Accept, track_type: log, track_accounting: true
+  }
+- { state: present, layer: orchestration_demo Network, name: ACMECorp AppServer to DB, 
+    position: 3, source: Net_AppServers, destination: Net_DBServers, service: ["MySQL"], action: Accept, track_type: log, track_accounting: true
+  }
+- { state: present, layer: orchestration_demo Network, name: ACMECorp WebServer Outbound Access, 
+    position: 4, source: ["hst-dmz-webserver"], destination: any, service: ["http", "https", "ntp", "dns"], action: Accept, track_type: log, track_accounting: true
+  }
+  # Enable log on the existing cleanup rule
+- { state: present, layer: orchestration_demo Network, name: Cleanup rule, 
+    position: 5, source: any, destination: ["any"], service: ["any"], action: Drop, track_type: log, track_accounting: false
+  }

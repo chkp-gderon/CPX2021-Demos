@@ -1,0 +1,5 @@
+---
+# handlers file for chkp_sec_policy
+- name: Publish handler
+  check_point.mgmt.cp_mgmt_publish:
+  listen: Publish and install handler

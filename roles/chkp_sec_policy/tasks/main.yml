@@ -1,0 +1,6 @@
+---
+# tasks file for chkp_sec_policy
+#- include_tasks: cp_mgmt_package.yml
+- include_tasks: cp_mgmt_network.yml
+- include_tasks: cp_mgmt_host.yml
+- include_tasks: cp_mgmt_access_rule.yml
