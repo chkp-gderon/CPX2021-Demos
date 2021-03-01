@@ -9,6 +9,8 @@ This repository is a simplified version of the [AnsibleFest2020-Demos](https://g
 The Ansible Playbook updates an existing security policy package on a Check Point Management server that is used as a shared Policy Layer. The intention is to create a security policy that is partly managed by a security administrator (parent rule) and partly managed as code (child rules).
 The security policy is defined as variable file for Ansible in YAML format (orchestration_demo.yml). An ansible role is used as a collection of tasks to configure the policy objects and rules.
 
+[![Security Policy as Code | A Beginners Guide](https://img.youtube.com/vi/ePnOlnSp0us/0.jpg)](https://www.youtube.com/watch?v=ePnOlnSp0us)
+
 ## Requirements
 
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) - Version 2.9 or later
